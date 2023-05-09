@@ -7,12 +7,12 @@ import HeaderContainer from './components/Header/HeaderContainer';
 
 class App extends Component {
   render() {
-    return (
+        return (
       <section className="todoapp">
-        <HeaderContainer />
-        <section className="main">
-          <TaskListContainer />
-          <FooterContainer />
+          <HeaderContainer />
+            <section className="main">
+            <TaskListContainer />
+            <FooterContainer />
         </section>
       </section>
     );
