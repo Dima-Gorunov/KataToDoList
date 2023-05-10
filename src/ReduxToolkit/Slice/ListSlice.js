@@ -113,10 +113,14 @@ export const setInputTextThunk = (text) => {
 export const addListThunk = (List) => {
   return async (dispatch) => {
     try {
+      const text = List.text.trim();
+      if (!text) {
+        throw new SyntaxError('пустая строка');
+      }
       dispatch(addList(List));
       dispatch(setInputText(''));
     } catch (e) {
-      console.log(e.response?.data?.message || 'error');
+      console.log(e.response?.data?.message || e.message || 'error');
     }
   };
 };
