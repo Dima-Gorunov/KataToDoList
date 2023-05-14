@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { getInputText } from '../../ReduxToolkit/Selectors/ListSelector';
-import { addListThunk, setInputTextThunk } from '../../ReduxToolkit/Slice/ListSlice';
+import {
+  getInputMin,
+  getInputSec,
+  getInputText,
+  getMinutes,
+  getSeconds,
+} from '../../ReduxToolkit/Selectors/ListSelector';
+import {
+  addListThunk,
+  decrementSeconds,
+  setInputMin,
+  setInputSec,
+  setInputTextThunk,
+} from '../../ReduxToolkit/Slice/ListSlice';
 
 import NewTaskForm from './NewTaskForm';
 
@@ -14,11 +26,18 @@ class NewTaskFormContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    inputText: getInputText(state),
+    InputText: getInputText(state),
+    InputMin: getInputMin(state),
+    InputSec: getInputSec(state),
+    Minutes: getMinutes(state),
+    Seconds: getSeconds(state),
   };
 };
 
 export default connect(mapStateToProps, {
   setInputTextThunk,
   addListThunk,
+  decrementSeconds,
+  setInputMin,
+  setInputSec,
 })(NewTaskFormContainer);

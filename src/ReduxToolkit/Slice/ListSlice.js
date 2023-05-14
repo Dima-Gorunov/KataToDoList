@@ -3,7 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 const ListSlice = createSlice({
   name: 'ListSlice',
   initialState: {
-    inputText: '',
+    InputText: '',
+    InputMin: '',
+    InputSec: '',
+    Minutes: 1,
+    Seconds: 1,
     ShowLists: [],
     Lists: [],
     Filter: [
@@ -15,7 +19,36 @@ const ListSlice = createSlice({
   },
   reducers: {
     setInputText(state, { payload }) {
-      state.inputText = payload;
+      state.InputText = payload;
+    },
+
+    setInputMin(state, { payload }) {
+      state.InputMin = payload;
+    },
+
+    setInputSec(state, { payload }) {
+      state.InputSec = payload;
+    },
+
+    setTimerOnOrOf(state, { payload }) {
+      const { id, value } = payload;
+      const index = state.Lists.findIndex((list) => list.id === id);
+      if (index !== -1) {
+        state.Lists[index].timerOnOrOf = value;
+      }
+    },
+
+    decrementSeconds(state, { payload }) {
+      const id = payload;
+      const index = state.Lists.findIndex((list) => list.id === id);
+      if (index !== -1) {
+        if (state.Lists[index].seconds > 0) {
+          state.Lists[index].seconds--;
+        } else if (state.Lists[index].minutes > 0) {
+          state.Lists[index].minutes--;
+          state.Lists[index].seconds = 59;
+        }
+      }
     },
 
     setItemLeft(state, { payload }) {
@@ -94,18 +127,39 @@ const ListSlice = createSlice({
         return item;
       });
     },
+
     clearCompleted(state, { payload }) {
       state.Lists = state.Lists.filter((list) => !list.completed);
     },
   },
 });
 
+export const decrementSecondsThunk = (id) => {
+  return async (dispatch) => {
+    try {
+      dispatch(decrementSeconds(id));
+    } catch (e) {
+      console.log(e.response?.data?.message || e.message || 'error');
+    }
+  };
+};
+
+export const setTimerOnOrOfThunk = (id, value) => {
+  return async (dispatch) => {
+    try {
+      dispatch(setTimerOnOrOf({ id, value }));
+    } catch (e) {
+      console.log(e.response?.data?.message || e.message || 'error');
+    }
+  };
+};
+
 export const setInputTextThunk = (text) => {
   return async (dispatch) => {
     try {
       dispatch(setInputText(text));
     } catch (e) {
-      console.log(e.response?.data?.message || 'error');
+      console.log(e.response?.data?.message || e.message || 'error');
     }
   };
 };
@@ -118,9 +172,12 @@ export const addListThunk = (List) => {
         throw new SyntaxError('пустая строка');
       }
       dispatch(addList(List));
-      dispatch(setInputText(''));
     } catch (e) {
       console.log(e.response?.data?.message || e.message || 'error');
+    } finally {
+      dispatch(setInputText(''));
+      dispatch(setInputMin(''));
+      dispatch(setInputSec(''));
     }
   };
 };
@@ -130,7 +187,7 @@ export const setCompleteThunk = (completed, id) => {
     try {
       dispatch(setComplete({ completed, id }));
     } catch (e) {
-      console.log(e.response?.data?.message || 'error');
+      console.log(e.response?.data?.message || e.message || 'error');
     }
   };
 };
@@ -140,7 +197,7 @@ export const deleteListThunk = (id) => {
     try {
       dispatch(deleteList(id));
     } catch (e) {
-      console.log(e.response?.data?.message || 'error');
+      console.log(e.response?.data?.message || e.message || 'error');
     }
   };
 };
@@ -150,7 +207,7 @@ export const setEditingThunk = (editing, id) => {
     try {
       dispatch(setEditing({ editing, id }));
     } catch (e) {
-      console.log(e.response?.data?.message || 'error');
+      console.log(e.response?.data?.message || e.message || 'error');
     }
   };
 };
@@ -160,7 +217,7 @@ export const confirmEditingThunk = (id) => {
     try {
       dispatch(confirmEditing(id));
     } catch (e) {
-      console.log(e.response?.data?.message || 'error');
+      console.log(e.response?.data?.message || e.message || 'error');
     }
   };
 };
@@ -170,7 +227,7 @@ export const setFilterThunk = (text) => {
     try {
       dispatch(setFilter(text));
     } catch (e) {
-      console.log(e.response?.data?.message || 'error');
+      console.log(e.response?.data?.message || e.message || 'error');
     }
   };
 };
@@ -189,4 +246,8 @@ export const {
   updateShowLists,
   setItemLeft,
   clearCompleted,
+  decrementSeconds,
+  setInputMin,
+  setInputSec,
+  setTimerOnOrOf,
 } = ListSlice.actions;

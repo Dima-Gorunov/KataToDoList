@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns';
 
+import TimerContainer from '../Timer/TimerContainer';
+
 class Task extends Component {
   handleCheckboxChange(e, id) {
     const completed = e.currentTarget.checked;
@@ -26,8 +28,12 @@ class Task extends Component {
     this.props.confirmEditingThunk(id);
   }
 
+  timerOnOrOf(id, value) {
+    this.props.setTimerOnOrOfThunk(id, value);
+  }
+
   render() {
-    const { id, text, createdAt, completed, editing } = this.props.item;
+    const { id, text, createdAt, completed, editing, minutes, seconds, timerOnOrOf } = this.props.item;
     const distanceToNow = formatDistanceToNow(new Date(createdAt));
     return (
       <li className={`${editing && 'editing'} ${completed && 'completed'}`}>
@@ -39,21 +45,16 @@ class Task extends Component {
             type="checkbox"
           />
           <label>
-            <span className="description">{text}</span>
-            <span className="created">{distanceToNow}</span>
+            <span className="title">{text}</span>
+            <TimerContainer id={id} timerOnOrOf={timerOnOrOf} minutes={minutes} seconds={seconds} />
+            <span className="description">{distanceToNow}</span>
           </label>
           <button className="icon icon-edit" disabled={completed} onClick={() => this.changedList(editing, id)} />
           <button className="icon icon-destroy" onClick={() => this.deleteList(id)} />
         </div>
         {editing && (
           <form onSubmit={(e) => this.submitChange(e, id)}>
-            <input
-              ref={this.inputRef}
-              type="text"
-              onChange={(e) => this.changeInputEditing(e, id)}
-              className="edit"
-              defaultValue={text}
-            />
+            <input type="text" onChange={(e) => this.changeInputEditing(e, id)} className="edit" defaultValue={text} />
           </form>
         )}
       </li>
@@ -68,6 +69,9 @@ Task.propTypes = {
     createdAt: PropTypes.string,
     completed: PropTypes.bool,
     editing: PropTypes.bool,
+    minutes: PropTypes.number,
+    seconds: PropTypes.number,
+    timerOnOrOf: PropTypes.bool,
   }),
 };
 
@@ -78,6 +82,9 @@ Task.defaultProps = {
     createdAt: '',
     completed: false,
     editing: false,
+    minutes: 0,
+    seconds: 0,
+    timerOnOrOf: false,
   },
 };
 

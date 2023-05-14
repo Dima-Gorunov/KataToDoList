@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 
 import {
   changeEditingList,
-  confirmEditing,
   confirmEditingThunk,
+  decrementSeconds,
   deleteListThunk,
   setCompleteThunk,
   setEditingThunk,
+  setTimerOnOrOfThunk,
   updateShowLists,
 } from '../../ReduxToolkit/Slice/ListSlice';
 import { getLists } from '../../ReduxToolkit/Selectors/ListSelector';
@@ -33,4 +34,6 @@ export default connect(mapStateToProps, {
   changeEditingList,
   confirmEditingThunk,
   updateShowLists,
+  setTimerOnOrOfThunk,
+  decrementSeconds,
 })(TaskContainer);

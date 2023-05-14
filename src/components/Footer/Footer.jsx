@@ -11,7 +11,7 @@ class Footer extends Component {
   render() {
     return (
       <div className="footer">
-        <span className="todo-count">{this.props.ItemLeft}</span>
+        <span className="todo-count">{this.props.ItemLeft} items left</span>
         <TaskFilterContainer />
         <button className="clear-completed" onClick={() => this.clearCompleted()}>
           Clear completed
