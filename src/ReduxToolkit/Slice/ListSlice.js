@@ -52,11 +52,20 @@ const ListSlice = createSlice({
     },
 
     setItemLeft(state, { payload }) {
-      state.ItemLeft = state.Lists.filter((list) => list.completed === false).length;
+      state.ItemLeft = state.Lists?.filter((list) => list.completed === false).length;
+    },
+
+    setAllLists(state, { payload }) {
+      const Lists = payload || [];
+      state.Lists = Lists;
     },
 
     addList(state, { payload }) {
       state.Lists.push(payload);
+    },
+
+    setLocalStorage(state, { payload }) {
+      localStorage.setItem('Lists', JSON.stringify(state.Lists));
     },
 
     updateShowLists(state, { payload }) {
@@ -133,6 +142,27 @@ const ListSlice = createSlice({
     },
   },
 });
+
+export const setLocalStorageListsThunk = () => {
+  return async (dispatch) => {
+    try {
+      dispatch(setLocalStorage());
+    } catch (e) {
+      console.log(e.response?.data?.message || e.message || 'error');
+    }
+  };
+};
+
+export const getLocalStorageListsThunk = () => {
+  return async (dispatch) => {
+    try {
+      const Lists = JSON.parse(localStorage.getItem('Lists'));
+      dispatch(setAllLists(Lists));
+    } catch (e) {
+      console.log(e.response?.data?.message || e.message || 'error');
+    }
+  };
+};
 
 export const decrementSecondsThunk = (id) => {
   return async (dispatch) => {
@@ -250,4 +280,6 @@ export const {
   setInputMin,
   setInputSec,
   setTimerOnOrOf,
+  setLocalStorage,
+  setAllLists,
 } = ListSlice.actions;
