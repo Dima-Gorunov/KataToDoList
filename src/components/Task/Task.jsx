@@ -33,7 +33,7 @@ class Task extends Component {
   }
 
   render() {
-    const { id, text, createdAt, completed, editing, minutes, seconds, timerOnOrOf } = this.props.item;
+    const { id, text, createdAt, completed, editing, minutes, seconds, timerOnOrOf, inc } = this.props.item;
     const distanceToNow = formatDistanceToNow(new Date(createdAt));
     return (
       <li className={`${editing && 'editing'} ${completed && 'completed'}`}>
@@ -46,7 +46,16 @@ class Task extends Component {
           />
           <label>
             <span className="title">{text}</span>
-            <TimerContainer id={id} timerOnOrOf={timerOnOrOf} minutes={minutes} seconds={seconds} />
+            {!completed && (
+              <TimerContainer
+                id={id}
+                timerOnOrOf={timerOnOrOf}
+                completed={completed}
+                minutes={minutes}
+                seconds={seconds}
+                inc={inc}
+              />
+            )}
             <span className="description">{distanceToNow}</span>
           </label>
           <button className="icon icon-edit" disabled={completed} onClick={() => this.changedList(editing, id)} />
@@ -72,6 +81,8 @@ Task.propTypes = {
     minutes: PropTypes.number,
     seconds: PropTypes.number,
     timerOnOrOf: PropTypes.bool,
+    dec: PropTypes.bool,
+    inc: PropTypes.bool,
   }),
 };
 
@@ -85,6 +96,8 @@ Task.defaultProps = {
     minutes: 0,
     seconds: 0,
     timerOnOrOf: false,
+    dec: false,
+    inc: false,
   },
 };
 

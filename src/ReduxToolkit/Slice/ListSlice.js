@@ -23,11 +23,13 @@ const ListSlice = createSlice({
     },
 
     setInputMin(state, { payload }) {
-      state.InputMin = payload;
+      const text = payload.replace(/\D/g, '');
+      state.InputMin = text;
     },
 
     setInputSec(state, { payload }) {
-      state.InputSec = payload;
+      const text = payload.replace(/\D/g, '');
+      state.InputSec = text;
     },
 
     setTimerOnOrOf(state, { payload }) {
@@ -35,6 +37,19 @@ const ListSlice = createSlice({
       const index = state.Lists.findIndex((list) => list.id === id);
       if (index !== -1) {
         state.Lists[index].timerOnOrOf = value;
+      }
+    },
+
+    incrementSeconds(state, { payload }) {
+      const id = payload;
+      const index = state.Lists.findIndex((list) => list.id === id);
+      if (index !== -1) {
+        if (state.Lists[index].seconds <= 59) {
+          state.Lists[index].seconds++;
+        } else {
+          state.Lists[index].minutes++;
+          state.Lists[index].seconds = 0;
+        }
       }
     },
 
@@ -61,6 +76,10 @@ const ListSlice = createSlice({
     },
 
     addList(state, { payload }) {
+      const { minutes, seconds } = payload;
+      if (minutes + seconds === 0) {
+        payload.inc = true;
+      }
       state.Lists.push(payload);
     },
 
@@ -87,6 +106,7 @@ const ListSlice = createSlice({
       const index = state.Lists.findIndex((list) => list.id === id);
       if (index !== -1) {
         state.Lists[index].completed = completed;
+        state.Lists[index].timerOnOrOf = false;
       }
     },
 
@@ -174,6 +194,16 @@ export const decrementSecondsThunk = (id) => {
   };
 };
 
+export const incrementSecondsThunk = (id) => {
+  return async (dispatch) => {
+    try {
+      dispatch(incrementSeconds(id));
+    } catch (e) {
+      console.log(e.response?.data?.message || e.message || 'error');
+    }
+  };
+};
+
 export const setTimerOnOrOfThunk = (id, value) => {
   return async (dispatch) => {
     try {
@@ -198,12 +228,17 @@ export const addListThunk = (List) => {
   return async (dispatch) => {
     try {
       const text = List.text.trim();
+      const { minutes, seconds } = List;
       if (!text) {
         throw new SyntaxError('пустая строка');
+      }
+      if (minutes > 59 || seconds > 59) {
+        throw new SyntaxError('(Min, Sec) - значения не больше 59');
       }
       dispatch(addList(List));
     } catch (e) {
       console.log(e.response?.data?.message || e.message || 'error');
+      alert(e.response?.data?.message || e.message || 'error');
     } finally {
       dispatch(setInputText(''));
       dispatch(setInputMin(''));
@@ -282,4 +317,5 @@ export const {
   setTimerOnOrOf,
   setLocalStorage,
   setAllLists,
+  incrementSeconds,
 } = ListSlice.actions;
