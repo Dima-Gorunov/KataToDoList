@@ -19,8 +19,16 @@ class Timer extends Component {
           marginRight: '20px',
         }}
       >
-        <button onClick={() => this.setTimerOnOrOf(this.props.id, true)} className="icon icon-play" />
-        <button onClick={() => this.setTimerOnOrOf(this.props.id, false)} className="icon icon-pause" />
+        <button
+          onClick={() => this.setTimerOnOrOf(this.props.id, true)}
+          disabled={this.props.completed}
+          className="icon icon-play"
+        />
+        <button
+          onClick={() => this.setTimerOnOrOf(this.props.id, false)}
+          disabled={this.props.completed}
+          className="icon icon-pause"
+        />
         {`${this.props.minutes}:${this.props.seconds}`}
         {this.props.timerOnOrOf ? 'on' : 'of'}
       </span>
@@ -29,25 +37,19 @@ class Timer extends Component {
 }
 
 Timer.propTypes = {
-  List: PropTypes.shape({
-    id: PropTypes.string,
-    completed: PropTypes.bool,
-    editing: PropTypes.bool,
-    minutes: PropTypes.number,
-    seconds: PropTypes.number,
-  }),
+  id: PropTypes.string,
+  completed: PropTypes.bool,
+  editing: PropTypes.bool,
+  minutes: PropTypes.number,
+  seconds: PropTypes.number,
 };
 
 Timer.defaultProps = {
-  item: {
-    id: '',
-    text: '',
-    createdAt: '',
-    completed: false,
-    editing: false,
-    minutes: 0,
-    seconds: 0,
-  },
+  id: '',
+  completed: false,
+  editing: false,
+  minutes: 0,
+  seconds: 0,
 };
 
 export default Timer;

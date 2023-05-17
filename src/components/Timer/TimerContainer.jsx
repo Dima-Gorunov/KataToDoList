@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { decrementSecondsThunk, setTimerOnOrOfThunk } from '../../ReduxToolkit/Slice/ListSlice';
+import { decrementSecondsThunk, incrementSecondsThunk, setTimerOnOrOfThunk } from '../../ReduxToolkit/Slice/ListSlice';
 
 import Timer from './Timer';
 
 class TimerContainer extends Component {
   componentDidMount() {
     this.intervalId = setInterval(() => {
-      if (this.props.timerOnOrOf && this.props.minutes + this.props.seconds > 0) {
+      if (this.props.timerOnOrOf && this.props.minutes + this.props.seconds > 0 && !this.props.inc) {
         this.props.decrementSecondsThunk(this.props.id);
       } else {
-        this.props.setTimerOnOrOfThunk(this.props.id, false);
+        if (this.props.timerOnOrOf && this.props.inc) {
+          this.props.incrementSecondsThunk(this.props.id);
+        } else {
+          this.props.setTimerOnOrOfThunk(this.props.id, false);
+        }
       }
     }, 1000);
   }
@@ -30,4 +34,6 @@ const mapStateToProps = (state) => {
   return {};
 };
 
-export default connect(mapStateToProps, { decrementSecondsThunk, setTimerOnOrOfThunk })(TimerContainer);
+export default connect(mapStateToProps, { decrementSecondsThunk, incrementSecondsThunk, setTimerOnOrOfThunk })(
+  TimerContainer
+);

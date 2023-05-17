@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import {
   changeEditingList,
   confirmEditingThunk,
-  decrementSeconds,
   deleteListThunk,
   setCompleteThunk,
   setEditingThunk,
@@ -35,5 +34,4 @@ export default connect(mapStateToProps, {
   confirmEditingThunk,
   updateShowLists,
   setTimerOnOrOfThunk,
-  decrementSeconds,
 })(TaskContainer);

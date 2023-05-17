@@ -8,13 +8,7 @@ import {
   getMinutes,
   getSeconds,
 } from '../../ReduxToolkit/Selectors/ListSelector';
-import {
-  addListThunk,
-  decrementSeconds,
-  setInputMin,
-  setInputSec,
-  setInputTextThunk,
-} from '../../ReduxToolkit/Slice/ListSlice';
+import { addListThunk, setInputMin, setInputSec, setInputTextThunk } from '../../ReduxToolkit/Slice/ListSlice';
 
 import NewTaskForm from './NewTaskForm';
 
@@ -37,7 +31,6 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   setInputTextThunk,
   addListThunk,
-  decrementSeconds,
   setInputMin,
   setInputSec,
 })(NewTaskFormContainer);
