@@ -44,7 +44,7 @@ const ListSlice = createSlice({
       const id = payload;
       const index = state.Lists.findIndex((list) => list.id === id);
       if (index !== -1) {
-        if (state.Lists[index].seconds <= 59) {
+        if (state.Lists[index].seconds < 59) {
           state.Lists[index].seconds++;
         } else {
           state.Lists[index].minutes++;
