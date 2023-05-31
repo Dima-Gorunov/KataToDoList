@@ -1,77 +1,75 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 
-class NewTaskForm extends Component {
-  changeInput(e) {
+const NewTaskForm = (props) => {
+  const changeInput = (e) => {
     const text = e.currentTarget.value;
-    this.props.setInputTextThunk(text);
-  }
+    props.setInputTextThunk(text);
+  };
 
-  changeInputMin(e) {
+  const changeInputMin = (e) => {
     const text = e.currentTarget.value;
-    this.props.setInputMin(text);
-  }
+    props.setInputMin(text);
+  };
 
-  changeInputSec(e) {
+  const changeInputSec = (e) => {
     const text = e.currentTarget.value;
-    this.props.setInputSec(text);
-  }
-  submit(e) {
+    props.setInputSec(text);
+  };
+  const submit = (e) => {
     e.preventDefault();
     const date = new Date().toISOString();
     const List = {
       id: uuidv4(),
-      text: this.props.InputText,
+      text: props.InputText,
       createdAt: date,
       completed: false,
       editing: false,
-      minutes: parseInt(this.props.InputMin, 10) || 0,
-      seconds: parseInt(this.props.InputSec, 10) || 0,
+      minutes: parseInt(props.InputMin, 10) || 0,
+      seconds: parseInt(props.InputSec, 10) || 0,
       timerOnOrOf: false,
     };
-    this.props.addListThunk(List);
-  }
+    props.addListThunk(List);
+  };
 
-  handleKeyDown(e) {
+  const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      this.submit(e);
+      submit(e);
     }
-  }
+  };
 
-  render() {
-    return (
-      <div className="header">
-        <form onSubmit={(e) => this.submit(e)} className="new-todo-form">
-          <input
-            className="new-todo"
-            placeholder="Task"
-            value={this.props.InputText}
-            onChange={(e) => this.changeInput(e)}
-            onKeyDown={(e) => this.handleKeyDown(e)}
-            autoFocus
-          />
-          <input
-            className="new-todo-form__timer"
-            placeholder="Min"
-            value={this.props.InputMin}
-            onChange={(e) => this.changeInputMin(e)}
-            onKeyDown={(e) => this.handleKeyDown(e)}
-            autoFocus
-          />
-          <input
-            className="new-todo-form__timer"
-            placeholder="Sec"
-            value={this.props.InputSec}
-            onChange={(e) => this.changeInputSec(e)}
-            onKeyDown={(e) => this.handleKeyDown(e)}
-            autoFocus
-          />
-        </form>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="header">
+      <form onSubmit={(e) => submit(e)} className="new-todo-form">
+        <input
+          className="new-todo"
+          placeholder="Task"
+          value={props.InputText}
+          onChange={(e) => changeInput(e)}
+          onKeyDown={(e) => handleKeyDown(e)}
+          autoFocus
+        />
+        <input
+          className="new-todo-form__timer"
+          placeholder="Min"
+          value={props.InputMin}
+          onChange={(e) => changeInputMin(e)}
+          onKeyDown={(e) => handleKeyDown(e)}
+          autoFocus
+        />
+        <input
+          className="new-todo-form__timer"
+          placeholder="Sec"
+          value={props.InputSec}
+          onChange={(e) => changeInputSec(e)}
+          onKeyDown={(e) => handleKeyDown(e)}
+          autoFocus
+        />
+      </form>
+    </div>
+  );
+};
 
 NewTaskForm.propTypes = {
   InputText: PropTypes.string,

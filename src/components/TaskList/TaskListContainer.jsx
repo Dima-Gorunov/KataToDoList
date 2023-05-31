@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { getFilter, getLists, getShowLists } from '../../ReduxToolkit/Selectors/ListSelector';
@@ -6,18 +6,14 @@ import { setLocalStorageListsThunk, updateShowLists } from '../../ReduxToolkit/S
 
 import TaskList from './TaskList';
 
-class TaskListContainer extends Component {
-  componentDidUpdate(prevProps) {
-    if (prevProps.Lists !== this.props.Lists || prevProps.Filter !== this.props.Filter) {
-      this.props.updateShowLists();
-      this.props.setLocalStorageListsThunk();
-    }
-  }
+const TaskListContainer = (props) => {
+  useEffect(() => {
+    props.updateShowLists();
+    props.setLocalStorageListsThunk();
+  }, [props.Lists, props.Filter]);
 
-  render() {
-    return <TaskList {...this.props} />;
-  }
-}
+  return <TaskList {...props} />;
+};
 
 const mapStateToProps = (state) => {
   return {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -12,11 +12,9 @@ import { addListThunk, setInputMin, setInputSec, setInputTextThunk } from '../..
 
 import NewTaskForm from './NewTaskForm';
 
-class NewTaskFormContainer extends Component {
-  render() {
-    return <NewTaskForm {...this.props} />;
-  }
-}
+const NewTaskFormContainer = (props) => {
+  return <NewTaskForm {...props} />;
+};
 
 const mapStateToProps = (state) => {
   return {

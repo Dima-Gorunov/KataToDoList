@@ -187,6 +187,7 @@ export const getLocalStorageListsThunk = () => {
 export const decrementSecondsThunk = (id) => {
   return async (dispatch) => {
     try {
+      console.log('dec');
       dispatch(decrementSeconds(id));
     } catch (e) {
       console.log(e.response?.data?.message || e.message || 'error');
@@ -197,6 +198,7 @@ export const decrementSecondsThunk = (id) => {
 export const incrementSecondsThunk = (id) => {
   return async (dispatch) => {
     try {
+      console.log('inc');
       dispatch(incrementSeconds(id));
     } catch (e) {
       console.log(e.response?.data?.message || e.message || 'error');
@@ -207,6 +209,7 @@ export const incrementSecondsThunk = (id) => {
 export const setTimerOnOrOfThunk = (id, value) => {
   return async (dispatch) => {
     try {
+      console.log('setTimerOnOrOfThunk');
       dispatch(setTimerOnOrOf({ id, value }));
     } catch (e) {
       console.log(e.response?.data?.message || e.message || 'error');

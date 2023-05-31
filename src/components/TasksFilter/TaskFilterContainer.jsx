@@ -6,11 +6,9 @@ import { getFilter } from '../../ReduxToolkit/Selectors/ListSelector';
 
 import TaskFilter from './TaskFilter';
 
-class TaskFilterContainer extends Component {
-  render() {
-    return <TaskFilter {...this.props} />;
-  }
-}
+const TaskFilterContainer = (props) => {
+  return <TaskFilter {...props} />;
+};
 
 const mapStateToProps = (state) => {
   return {

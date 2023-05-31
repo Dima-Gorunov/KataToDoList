@@ -1,75 +1,64 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns';
 
 import TimerContainer from '../Timer/TimerContainer';
 
-class Task extends Component {
-  handleCheckboxChange(e, id) {
+const Task = (props) => {
+  const handleCheckboxChange = (e, id) => {
     const completed = e.currentTarget.checked;
-    this.props.setCompleteThunk(completed, id);
-  }
+    props.setCompleteThunk(completed, id);
+  };
 
-  deleteList(id) {
-    this.props.deleteListThunk(id);
-  }
+  const deleteList = (id) => {
+    props.deleteListThunk(id);
+  };
 
-  changedList(editing, id) {
-    this.props.setEditingThunk(!editing, id);
-  }
+  const changedList = (editing, id) => {
+    props.setEditingThunk(!editing, id);
+  };
 
-  changeInputEditing(e, id) {
+  const changeInputEditing = (e, id) => {
     const text = e.currentTarget.value;
-    this.props.changeEditingList({ id, text });
-  }
+    props.changeEditingList({ id, text });
+  };
 
-  submitChange(e, id) {
+  const submitChange = (e, id) => {
     e.preventDefault();
-    this.props.confirmEditingThunk(id);
-  }
+    props.confirmEditingThunk(id);
+  };
 
-  timerOnOrOf(id, value) {
-    this.props.setTimerOnOrOfThunk(id, value);
-  }
-
-  render() {
-    const { id, text, createdAt, completed, editing, minutes, seconds, timerOnOrOf, inc } = this.props.item;
-    const distanceToNow = formatDistanceToNow(new Date(createdAt));
-    return (
-      <li className={`${editing && 'editing'} ${completed && 'completed'}`}>
-        <div className="view">
-          <input
-            className="toggle"
-            checked={completed}
-            onChange={(e) => this.handleCheckboxChange(e, id)}
-            type="checkbox"
-          />
-          <label>
-            <span className="title">{text}</span>
-            {!completed && (
-              <TimerContainer
-                id={id}
-                timerOnOrOf={timerOnOrOf}
-                completed={completed}
-                minutes={minutes}
-                seconds={seconds}
-                inc={inc}
-              />
-            )}
-            <span className="description">{distanceToNow}</span>
-          </label>
-          <button className="icon icon-edit" disabled={completed} onClick={() => this.changedList(editing, id)} />
-          <button className="icon icon-destroy" onClick={() => this.deleteList(id)} />
-        </div>
-        {editing && (
-          <form onSubmit={(e) => this.submitChange(e, id)}>
-            <input type="text" onChange={(e) => this.changeInputEditing(e, id)} className="edit" defaultValue={text} />
-          </form>
-        )}
-      </li>
-    );
-  }
-}
+  const { id, text, createdAt, completed, editing, minutes, seconds, timerOnOrOf, inc } = props.item;
+  const distanceToNow = formatDistanceToNow(new Date(createdAt));
+  return (
+    <li className={`${editing && 'editing'} ${completed && 'completed'}`}>
+      <div className="view">
+        <input className="toggle" checked={completed} onChange={(e) => handleCheckboxChange(e, id)} type="checkbox" />
+        <label>
+          <span className="title">{text}</span>
+          {!completed && (
+            <TimerContainer
+              id={id}
+              timerOnOrOf={timerOnOrOf}
+              completed={completed}
+              minutes={minutes}
+              seconds={seconds}
+              inc={inc}
+            />
+          )}
+          <span className="description">{distanceToNow}</span>
+        </label>
+        <button className="icon icon-edit" disabled={completed} onClick={() => changedList(editing, id)} />
+        <button className="icon icon-destroy" onClick={() => deleteList(id)} />
+      </div>
+      {editing && (
+        <form onSubmit={(e) => submitChange(e, id)}>
+          <input type="text" onChange={(e) => changeInputEditing(e, id)} className="edit" defaultValue={text} />
+        </form>
+      )}
+    </li>
+  );
+};
 
 Task.propTypes = {
   item: PropTypes.shape({

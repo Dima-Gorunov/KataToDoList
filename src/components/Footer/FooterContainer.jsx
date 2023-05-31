@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { getItemLeft, getLists } from '../../ReduxToolkit/Selectors/ListSelector';
@@ -6,17 +6,13 @@ import { clearCompleted, setItemLeft } from '../../ReduxToolkit/Slice/ListSlice'
 
 import Footer from './Footer';
 
-class FooterContainer extends Component {
-  componentDidUpdate(prevProps) {
-    if (prevProps.Lists !== this.props.Lists) {
-      this.props.setItemLeft();
-    }
-  }
+const FooterContainer = (props) => {
+  useEffect(() => {
+    props.setItemLeft();
+  }, [props.Lists]);
 
-  render() {
-    return <Footer {...this.props} />;
-  }
-}
+  return <Footer {...props} />;
+};
 
 const mapStateToProps = (state) => {
   return {

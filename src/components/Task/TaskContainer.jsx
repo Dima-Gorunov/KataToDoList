@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -14,11 +14,9 @@ import { getLists } from '../../ReduxToolkit/Selectors/ListSelector';
 
 import Task from './Task';
 
-class TaskContainer extends Component {
-  render() {
-    return <Task {...this.props} />;
-  }
-}
+const TaskContainer = (props) => {
+  return <Task {...props} />;
+};
 
 const mapStateToProps = (state) => {
   return {

@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import App from './App';
 import { getLocalStorageListsThunk } from './ReduxToolkit/Slice/ListSlice';
 
-class AppContainer extends Component {
-  componentDidMount() {
-    this.props.getLocalStorageListsThunk();
-  }
+const AppContainer = (props) => {
+  useEffect(() => {
+    props.getLocalStorageListsThunk();
+  }, []);
 
-  render() {
-    return <App {...this.props} />;
-  }
-}
+  return <App {...props} />;
+};
 
 const mapStateToProps = (state) => {
   return {};
